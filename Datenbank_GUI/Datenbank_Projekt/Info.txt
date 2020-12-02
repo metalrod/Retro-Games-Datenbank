@@ -1,0 +1,13 @@
+-Quellcode ohne Electron da es sonst zu groß wird
+
+-die CSV-Dateien müssen sich im selben Ordner befinden
+
+-Verbindung mit der HTW muss vorhanden sein um auf die Datenbank zuzugreifen
+
+-erforderliche Libraries:
+jquery
+bootstrap
+csv
+
+-Testdaten CSV aus performancegründen auf 1000 Einträge gekürzt
+-Original dabei, umbenennen in "testdaten" falls diese verwendet werden soll

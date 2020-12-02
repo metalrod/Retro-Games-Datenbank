@@ -1,0 +1,572 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Datenbank-Projekt: Retrogames</title>
+
+    <!--Stylesheets zum Einbinden aus der css-Datei-->
+
+    <link rel="stylesheet" type="text/css" href="amiga.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+</head>
+<body>
+    <h1>Retrogames</h1>
+
+
+    <!--Standardbuttons-->
+
+    <input type="submit" id="sqldaten" value="Amiga-Spiele anzeigen" />
+    <input type="submit" id="refresh" value="Aktualisieren" />
+    <input type="submit" id="stats" value="Statistiken" />
+
+    <table class="table table-dark table-striped" id="table" border="1">
+
+      
+
+        <tbody></tbody>
+
+    </table>
+
+
+    <script>
+
+        //JQuery Einbindung um Links in neuem Fenster zu öffnen
+        window.$ = window.jQuery = require('jquery');
+
+        var shell = require('electron').shell;
+        //open links externally by default
+        $(document).on('click', 'a[href^="http"]', function (event) {
+            event.preventDefault();
+            shell.openExternal(this.href);
+        });
+
+        require('bootstrap');           //Einbindung von Bootstrap für schönere Designs
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+
+        var auswahl = 1;                //für Switch-Anweisung der SQL-Anfragen
+        var alltitles = new Array();    //Array um alle Titel zu speichern
+        var btn_id;                     //Variable für Button-ID
+        var clicked_id;                 //speichert die Nummer des zuletzt ausgewählten Titels(mehr) zur genauen Zuordnung
+        var clicked = [0, 0, 0, 0];     //zur Sortierung: wechselt nach klick zwischen 0 und 1// 0: asc / 1: desc 
+        var stats = ["'Anzahl Amiga Spiele'", "'Anzahl Ebay Angebote'", "'Summe aller Ebay-Angebote'", "'Durchschnittlicher Preis'"];                               //Namen für allgemeine Statistiken
+        var ebaystats = ["'Durchschnittlicher Preis'", "'Günstigstes Angebot'", "'Teuerstes Angebot'", "'Anzahl der Angebote'", "'Stunden bis zum Ablauf'"];         //Namen für Ebay-Statistiken
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+
+        //Verbindung mit der Datenbank
+
+        function sqllogin() {
+
+            console.log("Nummer 2");
+
+            var mysql = require('mysql');
+
+            var connection = mysql.createConnection({
+                host: "141.45.91.40",
+                user: "s0554662",
+                password: "illhvufJ",
+                database: "s0554662_Projekt"
+            });
+
+            connection.connect(function (err) {
+                if (err) {
+                    console.log(err.code);
+                    console.log(err.fatal);
+                }
+            });
+            return connection;
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+
+        //Öffnen und Lesen oder Crawler CSV-Dateien und einfügen in die Tabellen der SQL-Datenbank
+
+        function insert() {
+
+            var csv = require('csv');
+            var obj = csv();
+            var valueslemon = new Array();
+            var valueslemonmore = new Array();
+            var valuesebay = new Array();
+
+            //Lemonamiga CSV
+
+            obj.from.path('testdaten.csv').to.array(function (data) {
+                //alert("CSV Dateien werden neu eingelesen und in die Datenbank gespeichert");
+                var queue = new Array();
+                const connection = sqllogin();
+
+                for (var index = 1; index < data.length; index++) {
+
+                    valueslemon.push([data[index][1], data[index][3], data[index][9], data[index][10]]);
+                    valueslemonmore.push([data[index][0], data[index][2], data[index][4], data[index][5], data[index][6], data[index][7], data[index][8]]);
+                }
+
+                queue[0] = "DROP TABLE test";       //bug mit name: LEMONAMIGA(Drop Table und Create Table werden ignoriert)
+                queue[1] = "CREATE TABLE test (ID_MAIN INT NOT NULL AUTO_INCREMENT, DEVELOPER VARCHAR(100), GENRE VARCHAR(100), TITLE VARCHAR(100), PDATE VARCHAR(4), TS TIMESTAMP, PRIMARY KEY (ID_MAIN))";
+                queue[2] = "INSERT INTO test (DEVELOPER, GENRE, TITLE, PDATE) VALUES ?";
+
+                queue[3] = "DROP TABLE LEMONAMIGAINFO";
+                queue[4] = "CREATE TABLE LEMONAMIGAINFO (ID_INFO INT NOT NULL AUTO_INCREMENT, ADDED VARCHAR(15), DISKS VARCHAR(7), HARDWARE VARCHAR(30), LANGUAGE VARCHAR(200), PLAYERS VARCHAR(50), DISCRIPTION VARCHAR(11), THUMB VARCHAR(200), TS TIMESTAMP, PRIMARY KEY (ID_INFO), FOREIGN KEY (ID_INFO) REFERENCES LEMONAMIGA(ID_MAIN))";
+                queue[5] = "INSERT INTO LEMONAMIGAINFO (ADDED, DISKS, HARDWARE, LANGUAGE, PLAYERS, DISCRIPTION, THUMB) VALUES ?";               
+
+                for (var i = 0; i < 3; i++) {
+                    connection.query(queue[i], [valueslemon], function (err, result) {
+                        if (err) {
+                            console.log("Table 1");
+                        }
+                    });
+                }
+                for (var i = 3; i < 6; i++) {
+                    connection.query(queue[i], [valueslemonmore], function (err, result) {
+                        if (err) {
+                            console.log("Table 2");
+                        }
+                    });
+                }
+                console.log("Table created and csv uploaded 1");
+            });
+
+            //Ebay CSV
+
+            obj = csv();
+
+            obj.from.path('ebay_auctions.csv').to.array(function (data) {
+                var queue = new Array();
+                const connection = sqllogin();
+
+                for (var index = 1; index < data.length; index++) {
+
+                    valuesebay.push([data[index][0], data[index][1], data[index][2], data[index][3], data[index][4], data[index][5], data[index][6], data[index][7]]);
+                }
+
+                queue[0] = "DROP TABLE EBAY";
+                queue[1] = "CREATE TABLE EBAY (GAMETITLE VARCHAR(100), AUCTIONID VARCHAR(100) PRIMARY KEY NOT NULL, AUCTIONTITLE VARCHAR(100), PRICE FLOAT, LOCATION VARCHAR(100), URL VARCHAR(200), STAT VARCHAR(50), ENDTIME DATETIME, TS TIMESTAMP)";
+                queue[2] = "INSERT INTO EBAY (GAMETITLE, AUCTIONID, AUCTIONTITLE, PRICE, LOCATION, URL, STAT, ENDTIME) VALUES ?";
+
+                for (var i = 0; i < 3; i++) {
+                    connection.query(queue[i], [valuesebay], function (err, result) {
+                        if (err) {
+                            console.log("Table 3");
+                        }
+                    });
+                }
+                console.log("Table created and csv uploaded 2");
+            });
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+
+        //Sammlung aller wichtigen SQL-Queues für das Programm
+
+        function sqlqueue(callback) {
+
+            console.log(clicked_id);
+            console.log("Nummer 1");
+
+            const connection = sqllogin();
+            var title = alltitles[clicked_id];
+
+            switch (auswahl) {
+
+                //Allgemeine Anfragen
+
+                case 1:
+                    if (clicked[0] == 0) {
+                        queryString = 'SELECT `TITLE`, `PDATE`, `GENRE`, `DEVELOPER` FROM `test` ORDER BY TITLE';
+                        clicked[0] = 1;
+                    }
+                    else {
+                        queryString = 'SELECT `TITLE`, `PDATE`, `GENRE`, `DEVELOPER` FROM `test` ORDER BY TITLE DESC';
+                        clicked[0] = 0;
+                    }
+                    break;
+                case 2:
+                    if (clicked[1] == 0) {
+                        queryString = 'SELECT `TITLE`, `PDATE`, `GENRE`, `DEVELOPER` FROM `test` ORDER BY PDATE';
+                        clicked[1] = 1;
+                    }
+                    else {
+                        queryString = 'SELECT `TITLE`, `PDATE`, `GENRE`, `DEVELOPER` FROM `test` ORDER BY PDATE DESC';
+                        clicked[1] = 0;
+                    }
+                    break;
+                case 3:
+                    if (clicked[2] == 0) {
+                        queryString = 'SELECT `TITLE`, `PDATE`, `GENRE`, `DEVELOPER` FROM `test` ORDER BY GENRE';
+                        clicked[2] = 1;
+                    }
+                    else {
+                        queryString = 'SELECT `TITLE`, `PDATE`, `GENRE`, `DEVELOPER` FROM `test` ORDER BY GENRE DESC';
+                        clicked[2] = 0;
+                    }
+                    break;
+                case 4:
+                    if (clicked[3] == 0) {
+                        queryString = 'SELECT `TITLE`, `PDATE`, `GENRE`, `DEVELOPER` FROM `test` ORDER BY DEVELOPER';
+                        clicked[3] = 1;
+                    }
+                    else {
+                        queryString = 'SELECT `TITLE`, `PDATE`, `GENRE`, `DEVELOPER` FROM `test` ORDER BY DEVELOPER DESC';
+                        clicked[3] = 0;
+                    }
+                    break;
+                case 5:
+                    queryString = 'SELECT `*` FROM `test`, `LEMONAMIGAINFO` WHERE `ID_MAIN` = `ID_INFO` AND `TITLE` = ?';
+                    auswahl = 1;
+                    break;
+
+                case 6:
+                    var per = "'%'";            //ging leider nicht anders
+                    queryString = 'SELECT `*` FROM `test`, `LEMONAMIGAINFO`, `EBAY` WHERE `ID_MAIN` = `ID_INFO` AND TITLE LIKE CONCAT(' + per + ', GAMETITLE,' + per + ') AND `TITLE` = ? ';
+                    auswahl = 1;
+                    break;
+
+                // Für Statistiken:
+
+                case 7:
+                    queryString = 'SELECT COUNT(TITLE) AS `cnt`, ' + stats[0] + ' AS `cnt2` FROM `test`';
+                    break;
+
+                case 8:
+                    queryString = 'SELECT COUNT(GAMETITLE) AS `cnt`, ' + stats[1] + ' AS `cnt2` FROM `EBAY`';
+                    break;
+
+                case 9:
+                    queryString = 'SELECT ROUND(SUM(PRICE),2) AS `cnt`, ' + stats[2] + ' AS `cnt2` FROM `EBAY`';
+                    break;
+
+                case 10:
+                    queryString = 'SELECT ROUND(AVG(PRICE),2) AS `cnt`, ' + stats[3] + ' AS `cnt2` FROM `EBAY`';
+                    break;
+
+                ///////// weitere Queues ausdenken
+
+                case 11:
+                    queryString = 'SELECT COUNT(TITLE) AS `cnt`, ' + stats[4] + ' AS `cnt2` FROM `test`';
+                    break;
+
+                case 12:
+                    queryString = 'SELECT COUNT(GAMETITLE) AS `cnt`, ' + stats[5] + ' AS `cnt2` FROM `EBAY`';
+                    break;
+
+                case 13:
+                    queryString = 'SELECT ROUND(SUM(PRICE),2) AS `cnt`, ' + stats[6] + ' AS `cnt2` FROM `EBAY`';
+                    break;
+
+                case 14:
+                    queryString = 'SELECT ROUND(AVG(PRICE),2) AS `cnt`, ' + stats[7] + ' AS `cnt2` FROM `EBAY`';
+                    break;
+
+                case 15:
+                    queryString = 'SELECT COUNT(TITLE) AS `cnt`, ' + stats[8] + ' AS `cnt2` FROM `test`';
+                    break;
+
+                case 16:
+                    queryString = 'SELECT COUNT(GAMETITLE) AS `cnt`, ' + stats[9] + ' AS `cnt2` FROM `EBAY`';
+                    break;
+
+                case 17:
+                    queryString = 'SELECT ROUND(SUM(PRICE),2) AS `cnt`, ' + stats[10] + ' AS `cnt2` FROM `EBAY`';
+                    break;
+
+                //Für Ebay
+
+                case 18:
+                    queryString = 'SELECT ROUND(AVG(PRICE),2) AS `cnt`, ' + ebaystats[0] + ' AS `cnt2` FROM `EBAY` WHERE `GAMETITLE` = ?';
+                    break;
+
+                case 19:
+                    queryString = 'SELECT ROUND(MIN(PRICE),2) AS `cnt`, ' + ebaystats[1] + ' AS `cnt2` FROM `EBAY` WHERE `GAMETITLE` = ?';
+                    break;
+
+                case 20:
+                    queryString = 'SELECT ROUND(MAX(PRICE),2) AS `cnt`, ' + ebaystats[2] + ' AS `cnt2` FROM `EBAY` WHERE `GAMETITLE` = ?';
+                    break;
+
+                case 21:
+                    queryString = 'SELECT COUNT(GAMETITLE) AS `cnt`, ' + ebaystats[3] + ' AS `cnt2` FROM `EBAY` WHERE `GAMETITLE` = ?';
+                    break;
+
+                case 22:
+                    queryString = 'SELECT ROUND((TIMESTAMPDIFF(SECOND, NOW(),ENDTIME) /3600),2) AS `cnt`, ' + ebaystats[4] + ' AS `cnt2` FROM `EBAY` WHERE `GAMETITLE` = ?';
+                    break;
+
+                default:
+                    queryString = 'SELECT `TITLE`, `PDATE`, `GENRE`, `DEVELOPER` FROM `test` ORDER BY TITLE';
+            }
+
+            connection.query(queryString, [title], function (err, rows, fields) {
+                if (err) {
+                    console.log("Ein Fehler beim Ausführen der Query ist aufgetreten.");
+                    console.log(err);
+                    return;
+                }
+
+                callback(rows);
+                console.log("Suche erfolgreich beendet");
+
+            });
+
+            connection.end(function () {
+                console.log("Verbindung erfolgreich beendet");
+            });
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+
+        //Funktion für weitere allgemeine Informationen aus der Datenbank
+
+        function information() {
+
+            var html = '';
+
+            for (auswahl = 7; auswahl < 18; auswahl++) {
+
+                sqlqueue(function (rows) {
+
+                    rows.forEach(function (row) {
+
+                        html += '<tr><td>';
+                        html += row.cnt2;
+                        html += '<td>';
+                        html += row.cnt;
+                        html += '</td></tr>';
+
+                        console.log(row);
+                    });
+                    auswahl = 1;
+                    document.querySelector('#table > tbody').innerHTML = html;
+                });
+            }
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+
+        //Darstellung von Information aus der Lemonamiga-Tabelle: Title, Jahr, Genre, Entwickler und einfügen eines Sortierbuttons
+
+        function tabelle() {
+
+            //Die ersten 4 Buttons mit den Namen Title, Jahr, Genre, Entwickler
+
+            var html = '';
+
+            html += '<tr><td>';
+            html += '<button class="btn" onclick="tabelle(auswahl = 1)">Titel</button>';
+
+            html += '</td><td>';
+            html += '<button class="btn" onclick="tabelle(auswahl = 2)">Jahr</button>';
+
+            html += '</td><td>';
+            html += '<button class="btn" onclick="tabelle(auswahl = 3)">Genre</button>';
+
+            html += '</td><td>';
+            html += '<button class="btn" onclick="tabelle(auswahl = 4)">Entwickler</button>';
+
+            html += '</td></tr>';
+
+            sqlqueue(function (rows) {
+
+                //Auflisten aller Datenbankeinträge von Title, Jahr, Genre, Entwickler aus der Lemonamiga-Tabelle
+
+                btn_id = 0;
+                alltitles = [];
+                rows.forEach(function (row) {
+
+                    html += '<tr><td>';
+                    html += row.TITLE;
+                    alltitles.push(row.TITLE);
+                    html += '</td><td>';
+                    html += row.PDATE;
+                    html += '</td><td>';
+                    html += row.GENRE;
+                    html += '</td><td>';
+                    html += row.DEVELOPER;
+                    html += '</td><td>';
+                    html += '<button class="btn" id= ' + btn_id + ' onclick="mehr(this.id, auswahl = 5, clicked_id = this.id)">mehr</button>';   //Button für mehr Informationen
+                    btn_id++;
+                    html += '</td></tr>';
+
+                    console.log(row);
+
+                });
+                document.querySelector('#table > tbody').innerHTML = html;
+            });
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+
+        //Funktion für die Hauptbuttons "Amiga-Spiele anzeigen", "Aktualisieren", "Statistiken"
+
+        function el(selector) {
+            return document.getElementById(selector);
+        }
+
+        //Funktion zur Darstellung weiterer Informationen eines Titels nach dem Anklicken des "mehr" Buttons
+
+        function mehr(click) {
+            sqlqueue(function (rows) {
+
+                var html = '';
+                btn_id = 0;
+                rows.forEach(function (row) {
+
+                    // Lemonamiga
+
+                    html += '<tr><td>Titel</td><td>';
+                    html += row.TITLE;
+                    html += '</td></tr>';
+
+                    html += '<tr><td>Jahr</td><td>';
+                    html += row.PDATE;
+                    html += '</td></tr>';
+
+                    html += '<tr><td>Genre</td><td>';
+                    html += row.GENRE;
+                    html += '</td></tr>';
+
+                    html += '<tr><td>Entwickler</td><td>';
+                    html += row.DEVELOPER;
+                    html += '</td></tr>';
+
+                    html += '<tr><td>Sprache</td><td>';
+                    html += row.LANGUAGE;
+                    html += '</td></tr>';
+
+                    html += '<tr><td>Spieler</td><td>';
+                    html += row.PLAYERS;
+                    html += '</td></tr>';
+
+                    html += '<tr><td>Hardware</td><td>';
+                    html += row.HARDWARE;
+                    html += '</td></tr>';
+
+                    html += '<tr><td>Disks</td><td>';
+                    html += row.DISKS;
+                    html += '</td></tr>';
+
+                    html += '<tr><td>Hinzugefügt</td><td>';
+                    html += row.ADDED;
+                    html += '</td></tr>';
+
+                    html += '<tr><td>Ebay</td><td>';
+                    html += '<button class="btn" id= ' + btn_id + ' onclick="ebay(this.id, auswahl = 6)">Ebay</button>';   //Button für Ebay
+                    btn_id++;
+                    html += '</td></tr>';
+
+                    html += '<tr><td>Beschreibung</td><td>';
+                    html += row.DISCRIPTION;
+                    html += '</td></tr>';
+
+                    const body = document.getElementsByTagName('table')[0].parentNode;
+                    const img = document.createElement('img');
+                    img.src = "https://www.lemonamiga.com" + row.THUMB;
+                    img.src = row.THUMB;
+                    //body.appendChild(img);
+
+                    auswahl = 1;
+
+                    console.log(document.getElementById('sqldaten'));
+
+                    document.getElementById('sqldaten').addEventListener('click', event => body.removeChild(img));
+                    document.getElementById('stats').addEventListener('click', event => body.removeChild(img));
+
+                    console.log(row);
+                });
+                document.querySelector('#table > tbody', clicked_id).innerHTML = html;
+            });
+        }
+
+        function ebay(click) {
+            sqlqueue(function (rows) {
+
+                var html = '';
+
+                rows.forEach(function (row) {
+
+                    // Ebay
+
+                    html += '<tr><td>Ebay Bezeichnung</td><td>';
+                    html += row.AUCTIONTITLE;
+                    html += '</td></tr>';
+
+                    html += '<tr><td>Link</td><td>';
+                    tmp = row.URL;
+                    html += '<a href=' + tmp + '>Link zu Ebay</a>';
+                    html += '</td></tr>';
+
+                    html += '<tr><td>Preis</td><td>';
+                    html += row.PRICE;
+                    html += '</td></tr>';
+
+                    html += '<tr><td>Ort</td><td>';
+                    html += row.LOCATION;
+                    html += '</td></tr>';
+
+                    html += '<tr><td>Ebay ID</td><td>';
+                    html += row.AUCTIONID;
+                    html += '</td></tr>';
+
+                    html += '<tr><td>Status</td><td>';
+                    html += row.STAT;
+                    html += '</td></tr>';
+
+                    html += '<tr><td>Auktionsende</td><td>';
+                    html += row.ENDTIME;
+                    html += '</td></tr>';                   
+
+                    console.log(row);
+                });
+                for (auswahl = 18; auswahl < 23; auswahl++) {
+
+                    sqlqueue(function (rows) {
+
+                        rows.forEach(function (row) {
+
+                            html += '<tr><td>';
+                            html += row.cnt2;
+                            html += '<td>';
+                            html += row.cnt;
+                            html += '</td></tr>';
+
+                            console.log(row);
+                        });
+                        document.querySelector('#table > tbody').innerHTML = html;
+                    });
+                }
+                auswahl = 1;
+                document.querySelector('#table > tbody').innerHTML = html;
+            });
+        }
+
+        //Eventlistener der Main Buttons
+
+        el('sqldaten').addEventListener('click', tabelle, false);   //Button alle Spiele anzeigen
+
+        el('refresh').addEventListener('click', reset, false);      //Button CSV einlesen
+
+        el('stats').addEventListener('click', mehrinfo, false);     //Button für allgemeine Informationen
+
+
+        //Funktion für CSV einlesen
+
+        function reset() {
+            sqllogin();
+            insert();
+        }
+
+        //Funktion für allgemeine Informationen
+
+        function mehrinfo() {
+            sqllogin();
+            information();
+        }
+
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,298 @@
+/home/erik/PycharmProjects/LemonamigaEbay/venv/bin/python /home/erik/PycharmProjects/LemonamigaEbay/start.py
+### => Start
+### => Database connected
+### => Ebay connected
+### => 0 were set to inactive
+No auctions found for 1000 Miglia 1927 1933 Volume 
+Keywords: Amiga 1000 Miglia 1927 1933 Volume 
+No auctions found for 1869 History Experience Part 
+Keywords: Amiga 1869 History Experience Part 
+No auctions found for 1943 The Battle of Midway
+Keywords: Amiga 1943 The Battle of Midway
+2 was inserted
+No auctions found for 3001 O Connors Fight
+Keywords: Amiga 3001 O Connors Fight
+4 was inserted
+6 was inserted
+No auctions found for 4D Sports Driving
+Keywords: Amiga 4D Sports Driving
+No auctions found for 4th Inches
+Keywords: Amiga 4th Inches
+No auctions found for 4x4 Off Road Racing
+Keywords: Amiga 4x4 Off Road Racing
+No auctions found for 5th Gear
+Keywords: Amiga 5th Gear
+10 was inserted
+12 was inserted
+10 was inserted
+2 was inserted
+2 was inserted
+No auctions found for Abandoned Places A Time for H
+Keywords: Amiga Abandoned Places A Time for H
+No auctions found for ABC Wide World of Sports Boxin
+Keywords: Amiga ABC Wide World of Sports Boxin
+8 was inserted
+6 was inserted
+6 was inserted
+No auctions found for Advantage Tennis
+Keywords: Amiga Advantage Tennis
+No auctions found for Adventures of Quik Silva Th
+Keywords: Amiga Adventures of Quik Silva Th
+4 was inserted
+No auctions found for Adventures of Willy Beamish T
+Keywords: Amiga Adventures of Willy Beamish T
+2 was inserted
+4 was inserted
+2 was inserted
+2 was inserted
+4 was inserted
+No auctions found for Airborne Ranger
+Keywords: Amiga Airborne Ranger
+No auctions found for AirForce Commander
+Keywords: Amiga AirForce Commander
+8 was inserted
+2 was inserted
+4 was inserted
+42 was inserted
+26 was inserted
+No auctions found for Alien Breed II The Horror Con
+Keywords: Amiga Alien Breed II The Horror Con
+No auctions found for Alien Breed Special Edition 1
+Keywords: Amiga Alien Breed Special Edition 1
+6 was inserted
+2 was inserted
+No auctions found for Alien Storm
+Keywords: Amiga Alien Storm
+No auctions found for Alien Syndrome
+Keywords: Amiga Alien Syndrome
+50 was inserted
+4 was inserted
+2 was inserted
+4 was inserted
+2 was inserted
+No auctions found for Alternate Reality The City
+Keywords: Amiga Alternate Reality The City
+No auctions found for Amazing Spider Man The
+Keywords: Amiga Amazing Spider Man The
+6 was inserted
+6 was inserted
+4 was inserted
+4 was inserted
+8 was inserted
+No auctions found for Apache Flight
+Keywords: Amiga Apache Flight
+4 was inserted
+2 was inserted
+No auctions found for Aquatic Games The Starring J
+Keywords: Amiga Aquatic Games The Starring J
+No auctions found for Aquaventura
+Keywords: Amiga Aquaventura
+10 was inserted
+2 was inserted
+2 was inserted
+6 was inserted
+No auctions found for Archon II Adept
+Keywords: Amiga Archon II Adept
+4 was inserted
+2 was inserted
+No auctions found for Armageddon Man The
+Keywords: Amiga Armageddon Man The
+10 was inserted
+No auctions found for Armour Geddon II Codename Hel
+Keywords: Amiga Armour Geddon II Codename Hel
+No auctions found for Army Moves
+Keywords: Amiga Army Moves
+16 was inserted
+No auctions found for Arthur The Quest for Excalibu
+Keywords: Amiga Arthur The Quest for Excalibu
+4 was inserted
+No auctions found for Atomic Robo Kid
+Keywords: Amiga Atomic Robo Kid
+22 was inserted
+No auctions found for Atomix
+Keywords: Amiga Atomix
+2 was inserted
+No auctions found for Auto Duel
+Keywords: Amiga Auto Duel
+No auctions found for Aventures de Moktar Les
+Keywords: Amiga Aventures de Moktar Les
+2 was inserted
+2 was inserted
+6 was inserted
+6 was inserted
+10 was inserted
+2 was inserted
+4 was inserted
+4 was inserted
+No auctions found for Backlash
+Keywords: Amiga Backlash
+2 was inserted
+No auctions found for Badlands Pete
+Keywords: Amiga Badlands Pete
+No auctions found for Ball Game The
+Keywords: Amiga Ball Game The
+4 was inserted
+2 was inserted
+6 was inserted
+No auctions found for Bar Games
+Keywords: Amiga Bar Games
+2 was inserted
+No auctions found for Barbarian II The Dungeon of D
+Keywords: Amiga Barbarian II The Dungeon of D
+No auctions found for Barbarian The Ultimate Warrio
+Keywords: Amiga Barbarian The Ultimate Warrio
+No auctions found for Bard s Tale II The The Desti
+Keywords: Amiga Bard s Tale II The The Desti
+2 was inserted
+No auctions found for Bard s Tale The Tales of the
+Keywords: Amiga Bard s Tale The Tales of the
+No auctions found for Base Jumpers
+Keywords: Amiga Base Jumpers
+2 was inserted
+10 was inserted
+2 was inserted
+8 was inserted
+4 was inserted
+4 was inserted
+4 was inserted
+No auctions found for Battle Squadron The Destructi
+Keywords: Amiga Battle Squadron The Destructi
+6 was inserted
+4 was inserted
+No auctions found for Battleships
+Keywords: Amiga Battleships
+No auctions found for Battletech The Crescent Hawk 
+Keywords: Amiga Battletech The Crescent Hawk 
+No auctions found for BC Kid
+Keywords: Amiga BC Kid
+No auctions found for Beach Volley
+Keywords: Amiga Beach Volley
+2 was inserted
+No auctions found for Beastlord
+Keywords: Amiga Beastlord
+No auctions found for Behind the Iron Gate
+Keywords: Amiga Behind the Iron Gate
+10 was inserted
+6 was inserted
+2 was inserted
+2 was inserted
+2 was inserted
+No auctions found for Beyond the Ice Palace
+Keywords: Amiga Beyond the Ice Palace
+6 was inserted
+2 was inserted
+2 was inserted
+4 was inserted
+2 was inserted
+No auctions found for Bio Challenge
+Keywords: Amiga Bio Challenge
+4 was inserted
+12 was inserted
+2 was inserted
+8 was inserted
+4 was inserted
+2 was inserted
+4 was inserted
+2 was inserted
+2 was inserted
+4 was inserted
+No auctions found for Blazing Thunder
+Keywords: Amiga Blazing Thunder
+2 was inserted
+No auctions found for Blob
+Keywords: Amiga Blob
+4 was inserted
+4 was inserted
+2 was inserted
+No auctions found for Blues Brothers The
+Keywords: Amiga Blues Brothers The
+No auctions found for BMX Simulator
+Keywords: Amiga BMX Simulator
+No auctions found for Bo Jackson Baseball
+Keywords: Amiga Bo Jackson Baseball
+2 was inserted
+31 was inserted
+8 was inserted
+6 was inserted
+No auctions found for Bombmania
+Keywords: Amiga Bombmania
+2 was inserted
+6 was inserted
+2 was inserted
+No auctions found for Borobodur The Planet of Doom
+Keywords: Amiga Borobodur The Planet of Doom
+No auctions found for Borrowed Time
+Keywords: Amiga Borrowed Time
+2 was inserted
+2 was inserted
+2 was inserted
+4 was inserted
+4 was inserted
+12 was inserted
+4 was inserted
+No auctions found for Brutal Sports Series Football
+Keywords: Amiga Brutal Sports Series Football
+22 was inserted
+6 was inserted
+2 was inserted
+2 was inserted
+No auctions found for Bugbomber
+Keywords: Amiga Bugbomber
+6 was inserted
+2 was inserted
+4 was inserted
+2 was inserted
+6 was inserted
+No auctions found for California Games II
+Keywords: Amiga California Games II
+20 was inserted
+14 was inserted
+4 was inserted
+No auctions found for Capone
+Keywords: Amiga Capone
+2 was inserted
+2 was inserted
+8 was inserted
+4 was inserted
+No auctions found for Car Vup
+Keywords: Amiga Car Vup
+5 was inserted
+6 was inserted
+14 was inserted
+No auctions found for Carthage
+Keywords: Amiga Carthage
+No auctions found for Cartoons The
+Keywords: Amiga Cartoons The
+No auctions found for Castle Warrior
+Keywords: Amiga Castle Warrior
+16 was inserted
+No auctions found for Castlevania
+Keywords: Amiga Castlevania
+2 was inserted
+No auctions found for Cavemania
+Keywords: Amiga Cavemania
+No auctions found for Celica GT Rally
+Keywords: Amiga Celica GT Rally
+12 was inserted
+No auctions found for Chamber of the Sci Mutant Prie
+Keywords: Amiga Chamber of the Sci Mutant Prie
+4 was inserted
+2 was inserted
+No auctions found for Guldkorn Expressen
+Keywords: Amiga Guldkorn Expressen
+No auctions found for I Play 3D Soccer
+Keywords: Amiga I Play 3D Soccer
+No auctions found for Prehistoric Tale A
+Keywords: Amiga Prehistoric Tale A
+16 was inserted
+12 was inserted
+No auctions found for Simpsons The Bart vs the Sp
+Keywords: Amiga Simpsons The Bart vs the Sp
+No auctions found for Simpsons The Bart vs the Wo
+Keywords: Amiga Simpsons The Bart vs the Wo
+2 was inserted
+4 was inserted
+### => Finish
+
+Process finished with exit code 0
+
